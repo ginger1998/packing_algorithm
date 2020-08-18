@@ -45,18 +45,10 @@ public class PackingService {
                 }
                 //знаходимо різницю між цією максимальною кількість і тією, що в замовленні
                 int tempDiff=amount-order.getNumberOfProducts();
-                //якщо різниця від'ємна, це означає, що замовлення у коробку не вміститься, тож переходимо до наступного замовлення
-                if(tempDiff<0){
-                    continue;
-                }
-                else{
-                    //обчислюємо розміри вільного простору коробки при заповненні максимальною к-стю продукту
-                    Integer[] tempSpace=new Integer[caseSize.length];
-                    for(int j=0;j<caseSize.length;j++){
-                        tempSpace[j]=caseSize[j]-productSize[j]*count[j];
-                    }
+                //якщо різниця від'ємна, це означає, що замовлення у коробку не вміститься, тож ніяких дій не виконуємо
+                if(tempDiff>=0){
                     //загальний об'єм вільного простору при даному замовленні
-                    int tempFreeVolume=tempDiff*getVolume(productSize)+getVolume(tempSpace);
+                    int tempFreeVolume=getVolume(caseSize)-order.getNumberOfProducts()*getVolume(productSize);
                     //якщо об'єм вільного простору менший за оптимальний
                     if(tempFreeVolume<freeVolume){
                         //встановлюємо поточний об'єм вільного простору як оптимальний
@@ -75,8 +67,7 @@ public class PackingService {
 
     public int getVolume(Integer[] sizes){
         int volume=1;
-        for(int i=0;i<sizes.length;i++)
-            volume*=sizes[i];
+        for (Integer size : sizes) volume *= size;
         return volume;
     }
 }
