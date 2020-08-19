@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 class PackingServiceTest {
 
-    Set<Case> cases=new HashSet<>();;
+    Set<Case> cases=new HashSet<>();
     Set<Order> orders=new HashSet<>();
     Case aCase = new Case();
     Order order = new Order();
@@ -80,15 +80,27 @@ class PackingServiceTest {
 
     @Test
     void testNullCasesPacking() {
-        Set<Case> casesEmpty=null;
         assertThrows(NullPointerException.class,
-                ()->{ new PackingService().packing(casesEmpty,orders);});
+                ()->new PackingService().packing(null,orders));
     }
 
     @Test
     void testNullOrdersPacking() {
-        Set<Order> ordersEmpty=null;
         assertThrows(NullPointerException.class,
-                ()->{ new PackingService().packing(cases,ordersEmpty);});
+                ()->new PackingService().packing(cases,null));
+    }
+
+    @Test
+    void testNullOrderPacking() {
+        orders.add(new Order());
+        assertThrows(NullPointerException.class,
+                ()-> new PackingService().packing(cases,orders));
+    }
+
+    @Test
+    void testNullCasePacking() {
+        cases.add(new Case());
+        assertThrows(NullPointerException.class,
+                ()->new PackingService().packing(cases,orders));
     }
 }
